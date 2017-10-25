@@ -1,0 +1,348 @@
+PROCEDIMIENTOS
+
+
+1
+delimiter //
+create procedure 1_proce()
+begin
+select semestre, count(*) as estudiantes from estudiante group by semestre;
+end//
+delimiter ;
+call 1_proce();
++----------+-------------+
+| semestre | estudiantes |
++----------+-------------+
+|        1 |          13 |
+|        2 |           3 |
+|        3 |           5 |
++----------+-------------+
+
+2
+
+delimiter //
+create procedure 2_proce(IN semestre int)
+begin
+select estudiante.codigo,nombre,apellido,email from estudiante where estudiante.semestre=semestre ;
+end//
+delimiter ;
+call 2_proce(1);
++-------------+-------------------+--------------------+------------------------
+-------+
+| codigo      | nombre            | apellido           | email
+       |
++-------------+-------------------+--------------------+------------------------
+-------+
+| 98022155962 | ANDRES FELIPE     | ALZATE GARCIA      | danielcotecnova@gmail.c
+om     |
+| 98022155963 | LUIS FERNANDO     | CANO OSPINA        | wordperfect1367@hotmail
+.com   |
+| 98022155964 | JHON EDWAR        | GIRALDO JARAMILLO  | krlosmurillo199@gmail.c
+om     |
+| 98022155965 | SANTIAGO          | GIRALDO VELEZ      | yermanmicha@gmail.com
+       |
+| 98022155966 | JHON MARIO        | GUTIERREZ OBANDO   | edwingarcia2007@hotmail
+.com   |
+| 98022155967 | WILSON ANDRES     | MACIAS SALDARRIAGA | fercho1286@outlook.es
+       |
+| 98022155968 | JUAN FELIPE       | MARIN ARENAS       | miguelpd80@gmail.com
+       |
+| 98022155969 | NATALIA           | PENILLA OSPINA     | adrianvc9302@hotmail.co
+m      |
+| 98022155970 | JOULINNE ANDREA   | RAMIREZ TABORDA    | coflan@outlook.com
+       |
+| 98022155971 | CRISTIAN          | RESTREPO ZULUAGA   | luisfernandocano4@hotma
+il.com |
+| 98022155972 | DANY JOHANNA      | SANTANA ANGULO     | jegiraldoj@outlook.com
+       |
+| 98022155973 | YENIFER ALEJANDRA | VALENCIA RINCON    | SYVELEZ44@GMAIL.COM
+       |
+| 98022155974 | IVAN DANIEL       | VALENCIA CARVAJAL  | m.aira1997@hotmail.es
+       |
++-------------+-------------------+--------------------+------------------------
+-------+
+call 2_proce(2);
++-------------+----------------+--------------------+---------------------------
+---+
+| codigo      | nombre         | apellido           | email
+   |
++-------------+----------------+--------------------+---------------------------
+---+
+| 98022155975 | DANIEL FELIPE  | CASTA¥O JARAMILLO  | donnyth_03@hotmail.com
+   |
+| 98022155976 | ALEJANDRO      | GOMEZ BUENAVENTURA | juanfelipemarin3@outlook.c
+om |
+| 98022155977 | CARLOS ALBERTO | MURILLO RESTREPO   | nataliapenilla91@hotmail.c
+om |
++-------------+----------------+--------------------+---------------------------
+---+
+call 2_proce(3);
++-------------+----------------+--------------------+---------------------------
+---+
+| codigo      | nombre         | apellido           | email
+   |
++-------------+----------------+--------------------+---------------------------
+---+
+| 98022155975 | DANIEL FELIPE  | CASTA¥O JARAMILLO  | donnyth_03@hotmail.com
+   |
+| 98022155976 | ALEJANDRO      | GOMEZ BUENAVENTURA | juanfelipemarin3@outlook.c
+om |
+| 98022155977 | CARLOS ALBERTO | MURILLO RESTREPO   | nataliapenilla91@hotmail.c
+om |
++-------------+----------------+--------------------+---------------------------
+---+
+
+3
+
+delimiter //
+create procedure 3_proc(IN codigo varchar(15))
+begin
+select email from estudiante where estudiante.codigo=codigo;
+end//
+delimiter ;
+call 3_proc("98022155982");
++----------------------------+
+| email                      |
++----------------------------+
+| ivandaniel2094@hotmail.com |
++----------------------------+
+call 3_proc("98022155977");
++------------------------------+
+| email                        |
++------------------------------+
+| nataliapenilla91@hotmail.com |
++------------------------------+
+call 3_proc("98022155974");
++-----------------------+
+| email                 |
++-----------------------+
+| m.aira1997@hotmail.es |
++-----------------------+
+
+4
+delimiter //
+create procedure 4_proce(IN email varchar(30))
+begin
+select estudiante.email,nombre from estudiante where estudiante.email like concat ('%',email,'%');
+end//
+delimiter ;
+call 4_proce("gmail");
++---------------------------+-------------------+
+| email                     | nombre            |
++---------------------------+-------------------+
+| danielcotecnova@gmail.com | ANDRES FELIPE     |
+| krlosmurillo199@gmail.com | JHON EDWAR        |
+| yermanmicha@gmail.com     | SANTIAGO          |
+| miguelpd80@gmail.com      | JUAN FELIPE       |
+| SYVELEZ44@GMAIL.COM       | YENIFER ALEJANDRA |
+| danyjohana321@gmail.com   | FERNEY ALBERTO    |
++---------------------------+-------------------+
+call 4_proce("hotmail");
++-------------------------------+----------------+
+| email                         | nombre         |
++-------------------------------+----------------+
+| wordperfect1367@hotmail.com   | LUIS FERNANDO  |
+| edwingarcia2007@hotmail.com   | JHON MARIO     |
+| adrianvc9302@hotmail.com      | NATALIA        |
+| luisfernandocano4@hotmail.com | CRISTIAN       |
+| m.aira1997@hotmail.es         | IVAN DANIEL    |
+| donnyth_03@hotmail.com        | DANIEL FELIPE  |
+| nataliapenilla91@hotmail.com  | CARLOS ALBERTO |
+| joulinne@hotmail.com          | HERMAN         |
+| cristian.c.z@hotmail.com      | EDWIN JOAN     |
+| mona_319@hotmail.es           | MIGUEL ANDRES  |
+| ivandaniel2094@hotmail.com    | ADRIAN         |
++-------------------------------+----------------+
+
+5
+
+delimiter //
+create procedure 5_proce(IN entero int)
+begin
+if entero = 0 then
+select nombre, email from estudiante order by nombre desc;
+else
+select nombre, email from estudiante order by nombre;
+end if;
+end//
+delimiter ;
+call 5_proce(0);
++-------------------+-------------------------------+
+| nombre            | email                         |
++-------------------+-------------------------------+
+| YENIFER ALEJANDRA | SYVELEZ44@GMAIL.COM           |
+| WILSON ANDRES     | fercho1286@outlook.es         |
+| SANTIAGO          | yermanmicha@gmail.com         |
+| NATALIA           | adrianvc9302@hotmail.com      |
+| MIGUEL ANDRES     | mona_319@hotmail.es           |
+| LUIS FERNANDO     | wordperfect1367@hotmail.com   |
+| JUAN FELIPE       | miguelpd80@gmail.com          |
+| JOULINNE ANDREA   | coflan@outlook.com            |
+| JHON MARIO        | edwingarcia2007@hotmail.com   |
+| JHON EDWAR        | krlosmurillo199@gmail.com     |
+| IVAN DANIEL       | m.aira1997@hotmail.es         |
+| HERMAN            | joulinne@hotmail.com          |
+| FERNEY ALBERTO    | danyjohana321@gmail.com       |
+| EDWIN JOAN        | cristian.c.z@hotmail.com      |
+| DANY JOHANNA      | jegiraldoj@outlook.com        |
+| DANIEL FELIPE     | donnyth_03@hotmail.com        |
+| CRISTIAN          | luisfernandocano4@hotmail.com |
+| CARLOS ALBERTO    | nataliapenilla91@hotmail.com  |
+| ANDRES FELIPE     | danielcotecnova@gmail.com     |
+| ALEJANDRO         | juanfelipemarin3@outlook.com  |
+| ADRIAN            | ivandaniel2094@hotmail.com    |
++-------------------+-------------------------------+
+call 5_proce(1);
++-------------------+-------------------------------+
+| nombre            | email                         |
++-------------------+-------------------------------+
+| ADRIAN            | ivandaniel2094@hotmail.com    |
+| ALEJANDRO         | juanfelipemarin3@outlook.com  |
+| ANDRES FELIPE     | danielcotecnova@gmail.com     |
+| CARLOS ALBERTO    | nataliapenilla91@hotmail.com  |
+| CRISTIAN          | luisfernandocano4@hotmail.com |
+| DANIEL FELIPE     | donnyth_03@hotmail.com        |
+| DANY JOHANNA      | jegiraldoj@outlook.com        |
+| EDWIN JOAN        | cristian.c.z@hotmail.com      |
+| FERNEY ALBERTO    | danyjohana321@gmail.com       |
+| HERMAN            | joulinne@hotmail.com          |
+| IVAN DANIEL       | m.aira1997@hotmail.es         |
+| JHON EDWAR        | krlosmurillo199@gmail.com     |
+| JHON MARIO        | edwingarcia2007@hotmail.com   |
+| JOULINNE ANDREA   | coflan@outlook.com            |
+| JUAN FELIPE       | miguelpd80@gmail.com          |
+| LUIS FERNANDO     | wordperfect1367@hotmail.com   |
+| MIGUEL ANDRES     | mona_319@hotmail.es           |
+| NATALIA           | adrianvc9302@hotmail.com      |
+| SANTIAGO          | yermanmicha@gmail.com         |
+| WILSON ANDRES     | fercho1286@outlook.es         |
+| YENIFER ALEJANDRA | SYVELEZ44@GMAIL.COM           |
++-------------------+-------------------------------+
+
+FUNCIONES
+
+1.
+
+delimiter //
+create function demepoblacion() RETURNS int (10)
+begin
+declare total int(10);
+select count(*) into total from estudiante;
+return total;
+end//
+delimiter ;
+select demepoblacion();
++-----------------+
+| demepoblacion() |
++-----------------+
+|              21 |
++-----------------+
+
+2.
+
+delimiter //
+create function 2_funcion(entrada varchar(15)) returns varchar(20)
+begin
+  declare dato varchar(50);
+  set dato = (select programa from estudiante where codigo = entrada);
+  return dato;
+end//
+delimiter ;
+select 2_funcion("98022155982");
++--------------------------+
+| 2_funcion("98022155982") |
++--------------------------+
+| TECNICO PROF. EN PRO     |
++--------------------------+
+select 2_funcion("98022155977");
++--------------------------+
+| 2_funcion("98022155977") |
++--------------------------+
+| TECNICO PROF. EN PRO     |
++--------------------------+
+
+3.
+
+delimiter //
+create function 3_funcion(entrada varchar(50)) returns int(50)
+begin
+  declare dato int(50);
+  set dato = (select count(*) from estudiante where email like concat ('%',entrada,'%'));
+  return dato;
+end//
+delimiter ;
+select 3_funcion("@");
++----------------+
+| 3_funcion("@") |
++----------------+
+|             21 |
++----------------+
+select 3_funcion("gmail");
++--------------------+
+| 3_funcion("gmail") |
++--------------------+
+|                  6 |
++--------------------+
+select 3_funcion("hotmail");
++----------------------+
+| 3_funcion("hotmail") |
++----------------------+
+|                   11 |
++----------------------+
+
+4.
+
+delimiter //
+create function 4_funcion(entrada varchar(50)) returns varchar(25)
+begin
+  declare dato varchar(25);
+  set dato = (select nombre from estudiante where email = entrada);
+  return dato;
+end //
+delimiter ;
+select 4_funcion("danielcotecnova@gmail.com");
++----------------------------------------+
+| 4_funcion("danielcotecnova@gmail.com") |
++----------------------------------------+
+| ANDRES FELIPE                          |
++----------------------------------------+
+select 4_funcion("yermanmicha@gmail.com");
++------------------------------------+
+| 4_funcion("yermanmicha@gmail.com") |
++------------------------------------+
+| SANTIAGO                           |
++------------------------------------+
+select 4_funcion("fercho1286@outlook.es");
++------------------------------------+
+| 4_funcion("fercho1286@outlook.es") |
++------------------------------------+
+| WILSON ANDRES                      |
++------------------------------------+
+
+5.
+
+delimiter //
+create function 5_funcion(entrada int(11)) returns int(20)
+begin
+  declare dato int(20);
+  set dato = (select count(*) from estudiante where semestre = entrada);
+  return dato;
+end //
+delimiter ;
+select 5_funcion(1);
++--------------+
+| 5_funcion(1) |
++--------------+
+|           13 |
++--------------+
+select 5_funcion(2);
++--------------+
+| 5_funcion(2) |
++--------------+
+|            3 |
++--------------+
+select 5_funcion(3);
++--------------+
+| 5_funcion(3) |
++--------------+
+|            5 |
++--------------+
